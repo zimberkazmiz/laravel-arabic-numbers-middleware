@@ -14,7 +14,25 @@ abstract class BaseNumbersMiddleware extends TransformsRequest
     protected $from = 'eastern';
 
     /** @var array */
-    protected $easternNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    protected $farsiNumbers = [
+        '۰' => 0,
+        '١' => 1,
+        '٢' => 2,
+        '٣' => 3,
+        '۴' => 4,
+        '۵' => 5,
+        '۶' => 6,
+        '٧' => 7,
+        '٨' => 8,
+        '٩' => 9,
+    ];
+
+    /** @var array */
+    protected $arabicNumbers = [
+        '٤' => 4,
+        '٥' => 5,
+        '٦' => 6,
+    ];
 
     /** @var array|mixed */
     protected $config;
@@ -84,7 +102,7 @@ abstract class BaseNumbersMiddleware extends TransformsRequest
      */
     protected function getNumbers()
     {
-        return $this->isFromEastern() ? array_flip($this->getEasternNumbers()) : $this->getEasternNumbers();
+        return $this->isFromEastern() ? $this->getEasternNumbers() : $this->getWesternNumbers();
     }
 
     /**
@@ -104,6 +122,11 @@ abstract class BaseNumbersMiddleware extends TransformsRequest
      */
     public function getEasternNumbers()
     {
-        return $this->easternNumbers;
+        return $this->farsiNumbers + $this->arabicNumbers;
+    }
+
+    public function getWesternNumbers()
+    {
+        return \array_flip($this->farsiNumbers);
     }
 }
